@@ -1,0 +1,18 @@
+from typing import Any
+from langgraph.graph import MessagesState
+
+class AgentState(MessagesState):
+    bot_id:str
+    system_promtp:str
+    provider:str
+    model_override:str | None
+    active_tools: dict[str, bool]
+    db_uri: str | None
+
+    route:str
+    rewritten_query:str
+    retrived_docs: list[dict[str, Any]]
+    sql_query:str
+    sql_result:str
+    retru_count:int
+    is_relevant:bool
