@@ -21,3 +21,4 @@ streamlit
 requests
 ragas
 pytest
+duckduckgo-search

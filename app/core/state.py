@@ -1,7 +1,10 @@
 from typing import Any
 from langgraph.graph import MessagesState
 
+
 class AgentState(MessagesState):
+    """Agent's Shared State Can be acces accrossed by all nodes"""
+
     bot_id:str
     system_promtp:str
     provider:str
