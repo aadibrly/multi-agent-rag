@@ -22,3 +22,5 @@ requests
 ragas
 pytest
 duckduckgo-search
+docx2txt
+langchain-text-splitters
