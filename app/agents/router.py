@@ -13,6 +13,41 @@ class RouteDecision(BaseModel):
     )
 
 def router_node(state: AgentState) -> dict:
+    # Forces the LLM to reply in strict JSON and parses the raw AIMessage
+    # directly into a RouteDecision Python object (not a normal AIMessage).
     llm = get_llm(tire='fast').with_structured_output(RouteDecision)
-    enabled = set(state.get("enabled_tools") or [])
-    has_db = bool(state.get()) 
+    active = state.get("active_tools") or {}
+    enabled = {name for name, is_on in active.items() if is_on} 
+    has_db = bool(state.get("db_uri"))
+    list_enabled = list(enabled)
+
+    system_prompt = (
+            "You are a routing supervisor for a multi-agent AI system.\n"
+            f"Available capabilities right now: enabled_tools={list(enabled)}, sql_connected={has_db}.\n"
+            "Pick the single best route:\n"
+            "- 'sql': User asks about database tables, metrics, records, counts, or rows (ONLY if sql_connected=True).\n"
+            "- 'rag': User asks about uploaded documents, manuals, policies, or private files (ONLY if 'rag_search' is in enabled_tools).\n"
+            "- 'tools': User needs live web search or math calculations (ONLY if 'web_search' or 'calculator' is in enabled_tools).\n"
+            "- 'direct': General conversation, coding help, or when the required tool/DB is disabled.\n"
+            "Also rewrite the latest user message into a standalone query using prior chat context."
+        )
+
+    # Prepends routing rules to chat history; returns a RouteDecision instance
+    # so you can access decision.route and decision.rewritten_query directly.
+    decision: RouteDecision = llm.invoke(
+        [SystemMessage(content=system_prompt)] + state['messages']
+    )
+
+    # Hard Python guardrail: blocks disabled tools/DB even if the LLM tries to pick them
+    route =  decision.route 
+    if route == "sql" and not has_db:
+        router = "direct"
+    elif router == "rag" and "rag_search" not in enabled:
+        route = "direct"
+    elif route == 'tools' and not (enabled & {"web_search", "calculator"}):
+        route = "direct"
+
+    return {
+        "route" : route,
+        "rewritten_query" : decision.rewritten_query
+    }
