@@ -22,3 +22,4 @@ def list_available_tools()-> list[dict[str, str]]:
     """Return tool name and description so the UI can auto-generate toogle switches"""
     return [{'name': name, 'description': tool_obj} 
             for name, tool_obj in TOOL_CATALOG.items()]
+  

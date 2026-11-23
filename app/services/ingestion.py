@@ -7,17 +7,19 @@ from app.config import settings
 
 def get_embeddings()-> OpenAIEmbeddings:
     """Return cloud hosted NVIDIA Embeddings vida Openai-compatablitiy Endpoint"""
-    return OpenAIEmbeddings(
+    embeddings= OpenAIEmbeddings(
         model=settings.EMBEDDING_MODEL,
         api_key=settings.NVIDIA_API_KEY,
         base_url="https://integrate.api.nvidia.com/v1"
     )
+    return embeddings
 
 def get_vectorstore(bot_id:str="default")-> Chroma:
     """return a Chroma db collection isolation for a specific bot"""
     vectors = Chroma(collection_name=f"bot_{bot_id}",
                      embedding_function=get_embeddings,
                      persist_directory=settings.CHROMA_PERSIST_DIR)
+    return vectors
 
 def injest_file(file_path:str, bot_id:str = 'default')-> int:
     """Load a PDF, DOCX, or TXT file, split into chunks, and store in ChromaDB."""
