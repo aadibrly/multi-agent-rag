@@ -14,7 +14,7 @@ def get_db_engine(db_uri: str) -> Engine:
 
     if db_uri not in _ENGINE_CACHE:
         engine = create_engine(db_uri, pool_pre_ping=True)#creates  an engine with a stable poole connection if no pool is active 
-        with engine.connect as conn:
+        with engine.connect() as conn:
             conn.execute(text("SELECT 1")) #executes teh db command
         _ENGINE_CACHE[db_uri] = engine
     return _ENGINE_CACHE[db_uri]
@@ -37,7 +37,7 @@ def execute_readonly_sql(db_uri: str, query: str) -> str:
     """Validate that a SQL query is strictly read-only and return formatted rows."""
     cleaned = query.strip().rstrip(";") #-> right end strip
 
-    if not cleaned.lower().startswith(("start","with")):
+    if not cleaned.lower().startswith(("select","with")):
         raise ValueError("Security Blocked: only SELECT or WITH read quries are permited")
     if _FORBIDEN_SQL.search(cleaned):
         raise ValueError("Security Blocked: Modifying Sql Keywords are not allowed")
