@@ -12,3 +12,5 @@ chroma_db/
 venv/
 # Virtual environments
 .venv
+*.env
+.env
