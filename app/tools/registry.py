@@ -9,7 +9,7 @@ TOOL_CATALOG: dict[str, BaseTool]={
     
 }
 
-def get_active_tools(active_flag: dict[str: bool] | None) -> list[BaseTool]:
+def get_active_tools(active_flag: dict[str, bool] | None) -> list[BaseTool]:
     """returns only the tool which is currenlty toggled ON for this session."""
     if not active_flag:
         return []
@@ -20,6 +20,6 @@ def get_active_tools(active_flag: dict[str: bool] | None) -> list[BaseTool]:
 
 def list_available_tools()-> list[dict[str, str]]:
     """Return tool name and description so the UI can auto-generate toogle switches"""
-    return [{'name': name, 'description': tool_obj} 
+    return [{'name': name, 'description': tool_obj.description} 
             for name, tool_obj in TOOL_CATALOG.items()]
   
