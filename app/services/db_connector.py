@@ -5,7 +5,7 @@ from sqlalchemy.engine import Engine
 _ENGINE_CACHE: dict[str, Engine] = {}
 #re.compile makes this a reusable regex object
 _FORBIDEN_SQL = re.compile(
-    r"\b(INSERT|SUPDATE|DELETE|DROP|ALTER|TRUNCATE|CREATE|REPLACE|GRAND|REVOKE)\b", re.IGNORECASE,
+    r"\b(INSERT|UPDATE|DELETE|DROP|ALTER|TRUNCATE|CREATE|REPLACE|GRAND|REVOKE)\b", re.IGNORECASE,
 
 ) 
 

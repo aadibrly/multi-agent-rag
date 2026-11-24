@@ -17,5 +17,5 @@ class AgentState(MessagesState):
     retrived_docs: list[dict[str, Any]]
     sql_query:str
     sql_result:str
-    retru_count:int
+    retry_count:int
     is_relevant:bool
