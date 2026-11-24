@@ -15,11 +15,10 @@ class RouteDecision(BaseModel):
 def router_node(state: AgentState) -> dict:
     # Forces the LLM to reply in strict JSON and parses the raw AIMessage
     # directly into a RouteDecision Python object (not a normal AIMessage).
-    llm = get_llm(tire='fast').with_structured_output(RouteDecision)
+    llm = get_llm(role='fast').with_structured_output(RouteDecision)
     active = state.get("active_tools") or {}
     enabled = {name for name, is_on in active.items() if is_on} 
     has_db = bool(state.get("db_uri"))
-    list_enabled = list(enabled)
 
     system_prompt = (
             "You are a routing supervisor for a multi-agent AI system.\n"
@@ -51,3 +50,4 @@ def router_node(state: AgentState) -> dict:
         "route" : route,
         "rewritten_query" : decision.rewritten_query
     }
+
