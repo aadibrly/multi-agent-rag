@@ -19,3 +19,4 @@ class AgentState(MessagesState):
     sql_result:str
     retry_count:int
     is_relevant:bool
+    final_answer:str
