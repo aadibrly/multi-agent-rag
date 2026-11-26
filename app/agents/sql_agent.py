@@ -3,7 +3,7 @@ from app.core.llm import get_llm
 from app.core.state import AgentState
 from app.services.db_connector import get_schema_summary, execute_readonly_sql
 
-def sql_node(state : AgentState) -> dict:
+def sql_agent_node(state : AgentState) -> dict:
     """Generate a read-only SQL query from live schema, execute it, and retry once on error."""
     db_uri = state.get("db_uri")
     if not db_uri:

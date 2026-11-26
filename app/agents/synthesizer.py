@@ -2,7 +2,7 @@ from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
 from app.core.llm import get_llm
 from app.core.state import AgentState
 
-def synthesizer_agent(state: AgentState) -> dict:
+def synthesizer_agent_node(state: AgentState) -> dict:
     """Synthesize the final natural-language response from RAG or SQL outputs."""
     query = state.get("rewritten_query") or state["messages"][-1].content
     route = state.get("route", "rag")

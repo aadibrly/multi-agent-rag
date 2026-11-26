@@ -7,7 +7,7 @@ from app.services.retriver import hybrid_retriver
 class GradeReslt(BaseModel):
     relevant : bool = Field(description="True if the retrived chunks contain usefull facts to answer the query else False")
 
-def rag_agent(state: AgentState) -> dict:
+def rag_agent_node(state: AgentState) -> dict:
     """Runs Hybrid retreval with NVIDIA reranking model. then safe-grade relevance"""
 
     sys_msg = "Judge whether the retrieved context helps answer the user's question."
