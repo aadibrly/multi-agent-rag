@@ -15,7 +15,7 @@ def router_query(state: AgentState) -> str:
     else:
         "rag_agent"
 
-def build_workflow(state: AgentState):
+def build_workflow():
 
     workflow = StateGraph(AgentState)
 
@@ -25,3 +25,29 @@ def build_workflow(state: AgentState):
     workflow.add_node("rag_agent", rag_agent_node)
     workflow.add_node("sql_agent", sql_agent_node)
     workflow.add_node("synthesizer", synthesizer_agent_node)
+
+    #adding edges
+    workflow.add_edge(START, "router")
+
+    #conditional branch 
+    workflow.add_conditional_edges(
+        "router", router_query,
+        {
+            "sql_agent":"sql_agent",
+            "rag_agent":"rag_agent"
+        }
+    )
+
+    #directing both path to the synthesizer
+    workflow.add_edge("sql_agent", "synthesizer")
+    workflow.add_edge("rag_agent", "synthesizer")\
+
+    #Exit Node
+    workflow.add_edge("synthesizer", END)
+    checkpointer = MemorySaver()
+    compiled_graph = workflow.compile(checkpointer=checkpointer)
+
+    return compiled_graph
+
+
+agent_graph = build_workflow()
