@@ -12,7 +12,7 @@ def synthesizer_agent_node(state: AgentState) -> dict:
     sql_result = state.get("sql_result", "")
 
     llm = get_llm(role="smart",
-                  provider=state.get("provider"),
+                  provider=state.get("provider", "groq"),
                   model_override=state.get("model_override"),
                   )
 

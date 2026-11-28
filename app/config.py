@@ -1,9 +1,15 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
+from pathlib import Path
+
+#gets teh root directory 
+BASE_DIR = Path(__file__).resolve().parent.parent #__file__ returns the path of current python file 
 
 class Settings(BaseSettings):
-    GROQ_API_KEY: str = ""
-    NVIDIA_API_KEY: str = ""
-    GOOGLE_API_KEY: str = ""
+    OPENROUTER_API_KEY: Optional[str] = None
+    GROQ_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: Optional[str] = None
+    NVIDIA_API_KEY: Optional[str] = None
 
     LANGCHAIN_TRACING_V2: bool = "True"
     LANGCHAIN_API_KEY: str = ""
@@ -16,12 +22,12 @@ class Settings(BaseSettings):
     GROQ_FAST_MODEL: str = "openai/gpt-oss-20b"
     GROQ_SMART_MODEL: str = "openai/gpt-oss-120b"
 
-    NVIDIA_FAST_MODEL: str = "nvidia/nemotron-3.5-lightning"
-    NVIDIA_SMART_MODEL: str = "moonshotai/kimi-k3.1-pro"
+    NVIDIA_FAST_MODEL: str = "nvidia/nemotron-3.5-lightning-30b-a3b"
+    NVIDIA_SMART_MODEL: str = "nvidia/nemotron-3-ultra-550b-a55b"
 
     GOOGLE_FAST_MODEL: str = "gemini-3.5-flash-lite"
     GOOGLE_SMART_MODEL: str = "gemini-3.8-flash"
 
-    mode_config = SettingsConfigDict(env_file='.env', extra='ignore') #tells Pydantic where to look for apis
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="ignore") #tells Pydantic where to look for apis
 
 settings = Settings()

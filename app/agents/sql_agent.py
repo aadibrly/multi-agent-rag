@@ -17,7 +17,7 @@ def sql_agent_node(state : AgentState) -> dict:
 
     llm = get_llm(
         role="smart", 
-        provider=state.get("provider"),
+        provider=state.get("provider", "groq"),
         model_override=state.get("model_override")
     )
 

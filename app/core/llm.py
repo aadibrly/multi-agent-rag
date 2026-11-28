@@ -11,7 +11,7 @@ def verify_model(provider: str, model_name: str) -> None:
         url = "https://api.groq.com/openai/v1/models"
         header = {"Authorization":f"Bearer {settings.GROQ_API_KEY}"}
     elif provider == 'nvidia':
-        url = "https://integrate.api.nvidia.com/v1/models"
+        url = "https://integrate.api.nvidia.com/v1/models" # this link show all teh current models 
         header = {"Authorization":f"Bearer {settings.NVIDIA_API_KEY}"}
     else:
         return
@@ -33,20 +33,28 @@ def get_llm(role:str ='smart', provider:str ='groq',
 
     '''Chooses the default or prefered model based on the availability and providers'''
     if provider == 'nvidia':
+        if not settings.NVIDIA_API_KEY:
+            raise ModelUnavailError(f"NVIDIA_API_KEY is missing in .env")
+                 
         default_model = settings.NVIDIA_FAST_MODEL if role == 'fast' else settings.NVIDIA_SMART_MODEL
         choosen_model = model_override or default_model
 
+        # model alive or deprocted
         if validate:
             verify_model(provider='nvidia', model_name=choosen_model)
+
         return init_chat_model(
             model=choosen_model,
-            model_provider="openai",
+            model_provider="nvidia",
             api_key=settings.NVIDIA_API_KEY,
             base_url="https://integrate.api.nvidia.com/v1",
             temperature=temperature
             )
 
-    if provider == 'google':
+    if provider in {"gemini", "google", "google_genai"}:
+        if not settings.GEMINI_API_KEY:
+            raise ModelUnavailError(f"GEMINI_API_KEY is missing in .env")
+        
         default_model = settings.GOOGLE_FAST_MODEL if role == 'fast' else settings.GOOGLE_SMART_MODEL
         choosen_model = model_override or default_model
 
@@ -58,7 +66,10 @@ def get_llm(role:str ='smart', provider:str ='groq',
             api_key=settings.GOOGLE_API_KEY,
             temperature=temperature
             )
-
+    
+    if not settings.GROQ_API_KEY:
+                raise ModelUnavailError(f"GROQ_API_KEY is missing in .env")
+    
     default_model = settings.GROQ_FAST_MODEL if role == 'fast' else settings.GROQ_SMART_MODEL
     choosen_model = model_override or default_model
 
