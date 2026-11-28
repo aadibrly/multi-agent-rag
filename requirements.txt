@@ -24,3 +24,4 @@ pytest
 duckduckgo-search
 docx2txt
 langchain-text-splitters
+langchain-nvidia-ai-endpoints

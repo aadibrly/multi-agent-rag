@@ -1,5 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
+from pathlib import Path
+
+#gets teh root directory 
+BASE_DIR = Path(__file__).resolve().parent.parent #__file__ returns the path of current python file 
 
 class Settings(BaseSettings):
     OPENROUTER_API_KEY: Optional[str] = None
@@ -24,6 +28,6 @@ class Settings(BaseSettings):
     GOOGLE_FAST_MODEL: str = "gemini-3.5-flash-lite"
     GOOGLE_SMART_MODEL: str = "gemini-3.8-flash"
 
-    model_config = SettingsConfigDict(env_file='.env', extra='ignore') #tells Pydantic where to look for apis
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="ignore") #tells Pydantic where to look for apis
 
 settings = Settings()

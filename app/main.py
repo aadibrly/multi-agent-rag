@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from langchain_core.messages import HumanMessage
+from langchain_core.runnables import RunnableConfig
 
 from app.core.graph import agent_graph
 from app.schemas.api_model import ChatRequest, ChatResponse
@@ -15,7 +16,7 @@ async def health_check():
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(payload: ChatRequest):
     try:
-        config={"configurable":{"thread_id":payload.thread_id}}
+        config: RunnableConfig={"configurable":{"thread_id":payload.thread_id}}
 
         initial_state = {
             "messages" : [HumanMessage(content=payload.query)],
@@ -38,5 +39,3 @@ async def chat_endpoint(payload: ChatRequest):
     except Exception as exc:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(exc))
-        
-
