@@ -10,10 +10,12 @@ from app.agents.synthesizer import synthesizer_agent_node
 
 def router_query(state: AgentState) -> str:
     """Reads state['route'] set by the router node and returns the next node key."""
-    selected_route = state.get("route", "rag")
+    selected_route = state.get("route", "direct")
     if selected_route == "sql":
         return "sql_agent"   
-    return "rag_agent"
+    elif selected_route == "rag":
+        return "rag_agent"
+    return "synthesizer"
 
 def build_workflow():
 
@@ -34,8 +36,9 @@ def build_workflow():
         "router", router_query,
         {
             "sql_agent":"sql_agent",
-            "rag_agent":"rag_agent"
-        }
+            "rag_agent":"rag_agent",
+            "synthesizer":"synthesizer"
+        },
     )
 
     #directing both path to the synthesizer
