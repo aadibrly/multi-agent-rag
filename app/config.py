@@ -18,8 +18,8 @@ class Settings(BaseSettings):
     GROQ_FAST_MODEL: str = "openai/gpt-oss-20b"
     GROQ_SMART_MODEL: str = "openai/gpt-oss-120b"
 
-    NVIDIA_FAST_MODEL: str = "nvidia/nemotron-3.5-lightning"
-    NVIDIA_SMART_MODEL: str = "moonshotai/kimi-k3.1-pro"
+    NVIDIA_FAST_MODEL: str = "nvidia/nemotron-3.5-lightning-30b-a3b"
+    NVIDIA_SMART_MODEL: str = "nvidia/nemotron-3-ultra-550b-a55b"
 
     GOOGLE_FAST_MODEL: str = "gemini-3.5-flash-lite"
     GOOGLE_SMART_MODEL: str = "gemini-3.8-flash"

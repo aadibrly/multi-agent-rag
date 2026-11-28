@@ -20,7 +20,7 @@ def rag_agent_node(state: AgentState) -> dict:
     if not chunks:
         return {'retrived_docs':[], "is_relevant" : False }
 
-    grader = get_llm(role='fast', provider=state.get("provider")).with_structured_output(GradeReslt)
+    grader = get_llm(role='fast', provider=state.get("provider", "groq")).with_structured_output(GradeReslt)
     content_preview = "\n\n".join(c['content'] for c in chunks)
     grade: GradeReslt = grader.invoke([
         SystemMessage(content=sys_msg),

@@ -15,7 +15,7 @@ class RouteDecision(BaseModel):
 def router_node(state: AgentState) -> dict:
     # Forces the LLM to reply in strict JSON and parses the raw AIMessage
     # directly into a RouteDecision Python object (not a normal AIMessage).
-    llm = get_llm(role='fast').with_structured_output(RouteDecision)
+    llm = get_llm(role='fast', provider=state.get("provider", "groq")).with_structured_output(RouteDecision)
     raw_tools = state.get("active_tools") or []
     if isinstance(raw_tools, dict):
         enabled = {name for name, is_on in raw_tools.items() if is_on}
