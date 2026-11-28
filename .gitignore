@@ -14,4 +14,3 @@ venv/
 .venv
 *.env
 .env
-test_nvdia.py
