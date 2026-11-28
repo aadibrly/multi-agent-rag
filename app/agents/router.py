@@ -40,8 +40,8 @@ def router_node(state: AgentState) -> dict:
     # Hard Python guardrail: blocks disabled tools/DB even if the LLM tries to pick them
     route =  decision.route 
     if route == "sql" and not has_db:
-        router = "direct"
-    elif router == "rag" and "rag_search" not in enabled:
+        route = "direct"
+    elif route == "rag" and "rag_search" not in enabled:
         route = "direct"
     elif route == 'tools' and not (enabled & {"web_search", "calculator"}):
         route = "direct"

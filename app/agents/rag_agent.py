@@ -30,5 +30,4 @@ def rag_agent_node(state: AgentState) -> dict:
     return {
         "retrived_docs" : chunks if grade.relevant else [],
         "is_relevant" : grade.relevant
-            
-    }
+}

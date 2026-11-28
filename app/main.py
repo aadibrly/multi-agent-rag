@@ -3,6 +3,7 @@ from langchain_core.messages import HumanMessage
 
 from app.core.graph import agent_graph
 from app.schemas.api_model import ChatRequest, ChatResponse
+import traceback
 
 #fast api object initilisation
 app = FastAPI(title="Multi Agent Rag And SQl API", version="1.0.0")
@@ -31,10 +32,11 @@ async def chat_endpoint(payload: ChatRequest):
         return ChatResponse(
             thread_id= payload.thread_id,
             route_taken= result.get("route", "unknown"),
-            final_answer = result.get("final_answer", "")
-            sql_query=result.get("sql_query"),
+            final_answer = result.get("final_answer", ""),
+            sql_query=result.get("sql_query")
         )
     except Exception as exc:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(exc))
         
 

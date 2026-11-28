@@ -1,9 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 class Settings(BaseSettings):
-    GROQ_API_KEY: str = ""
-    NVIDIA_API_KEY: str = ""
-    GOOGLE_API_KEY: str = ""
+    OPENROUTER_API_KEY: Optional[str] = None
+    GROQ_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: Optional[str] = None
+    NVIDIA_API_KEY: Optional[str] = None
 
     LANGCHAIN_TRACING_V2: bool = "True"
     LANGCHAIN_API_KEY: str = ""
@@ -22,6 +24,6 @@ class Settings(BaseSettings):
     GOOGLE_FAST_MODEL: str = "gemini-3.5-flash-lite"
     GOOGLE_SMART_MODEL: str = "gemini-3.8-flash"
 
-    mode_config = SettingsConfigDict(env_file='.env', extra='ignore') #tells Pydantic where to look for apis
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore') #tells Pydantic where to look for apis
 
 settings = Settings()

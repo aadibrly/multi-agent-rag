@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
+
 from app.core.state import AgentState
 from app.agents.rag_agent import rag_agent_node
 from app.agents.sql_agent import sql_agent_node
@@ -11,9 +12,8 @@ def router_query(state: AgentState) -> str:
     """Reads state['route'] set by the router node and returns the next node key."""
     selected_route = state.get("route", "rag")
     if selected_route == "sql":
-        return "sql_agent"
-    else:
-        "rag_agent"
+        return "sql_agent"   
+    return "rag_agent"
 
 def build_workflow():
 
@@ -40,7 +40,7 @@ def build_workflow():
 
     #directing both path to the synthesizer
     workflow.add_edge("sql_agent", "synthesizer")
-    workflow.add_edge("rag_agent", "synthesizer")\
+    workflow.add_edge("rag_agent", "synthesizer")
 
     #Exit Node
     workflow.add_edge("synthesizer", END)
